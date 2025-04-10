@@ -1,281 +1,272 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
+
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-	<title>Generate QR Code</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-	<script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
-
-
-	<style>
-		td {
-			min-width: 100px;
-		}
-		input {
-			width: 100%;
-		}
-	</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Code Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body>
-	<div style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: flex-start;">
-		<div style="width: 500px; margin-left: 5px; border: 0.5px solid black;">
-			<table style="width: 80%; margin-left: auto; margin-right: auto;">
-				<tr>
-				  <td style="width: 120px;">
-					  <label for="sizes">Kích thước:</label>
-				  </td>
-				  <td>
-					  <select name="sizes" id="sizes" style="width: 120px;">
-						<option value="50">50 x 50</option>
-						<option value="100">100 x 100</option>
-						<option value="200">200 x 200</option>
-						<option value="300">300 x 300</option>
-						<option value="500">500 x 500</option>
-						<option value="1000">1000 x 1000</option>
-					  </select>
-				  </td>
-				</tr>
-				<tr>
-				  <td>
-					  <label for="types">Loại:</label>
-				  </td>
-				  <td>
-					  <select name="types" id="types" style="width: 120px;">
-						<option value="dots">dots</option>
-						<option value="rounded">rounded</option>
-						<option value="classy">classy</option>
-						<option value="classy-rounded">classy-rounded</option>
-						<option value="square">square</option>
-						<option value="extra-rounded">extra-rounded</option>
-					  </select>
-				  </td>
-				</tr>
-				<tr>
-				  <td>
-					  <label for="colors">Màu:</label>
-				  </td>
-				  <td>
-					  <input type="text" id="colors" name="colors" style="width: 112px;">
-				  </td>
-				</tr>
-				<tr>
-				  <td>
-					  <label for="colors_b">Màu nền:</label>
-				  </td>
-				  <td>
-					  <input type="text" id="colors_b" name="colors_b" style="width: 112px;">
-				  </td>
-				</tr>
-				<tr>
-				  <td style="vertical-align:top">
-					  <label for="datas">Dữ liệu:</label>
-				  </td>
-				  <td>
-					  <textarea type="text" id="datas" name="datas" cols="50" rows="10"></textarea>
-				  </td>
-				</tr>
-				<tr>
-				  <td style="vertical-align:top">
-					  <label for="images">Link hình ảnh:</label>
-				  </td>
-				  <td>
-					  <textarea type="text" id="images" name="images" cols="50" rows="5"></textarea>
-				  </td>
-				</tr>
-				<tr>
-				  <td>
-					  <label for="i_size">Image size:</label>
-				  </td>
-				  <td>
-					  <select name="i_size" id="i_size"  style="width: 120px;">
-						  <option value="0.1">0.1</option>
-						  <option value="0.2">0.2</option>
-						  <option value="0.3">0.3</option>
-						  <option value="0.4">0.4</option>
-						  <option value="0.5">0.5</option>
-						  <option value="0.6">0.6</option>
-						  <option value="0.7">0.7</option>
-						  <option value="0.8">0.8</option>
-						  <option value="0.9">0.9</option>				
-					  </select>
-				  </td>
-				</tr>
-				<tr>
-				  <td>
-					  <label for="level">Sửa lỗi mã QR:</label>
-				  </td>
-				  <td>
-					  <select name="level" id="level"  style="width: 120px;">
-						  <option value="L">L (~7%)</option>
-						  <option value="M">M (~15%)</option>
-						  <option value="Q">Q (~25%)</option>
-						  <option value="H">H (~30%)</option>		
-					  </select>
-				  </td>
-				</tr>
-				<tr>
-				  <td></td>
-				  <td>
-					  <button type="button" id="run" style="width: 150px; height: 30px; cursor: pointer;">Tạo QR Code</button> 
-					  <button type="button" id="save" style="width: 150px; height: 30px; cursor: pointer;">Lưu QR Code</button> 
-					  <button type="button" id="export" style="width: 150px; height: 30px; cursor: pointer;">Export excel</button> 
-				  </td>
-				</tr>
-			  </table>
-		</div>
 
+<body class="bg-light">
+  <!-- HEADER -->
+  <div class="bg-white shadow-sm py-2 px-3 d-flex align-items-center mb-3">
+    <img src="https://avatars.githubusercontent.com/u/13997578?v=4" alt="Logo" width="40" height="40" class="me-2 rounded-circle" />
+    <h5 class="mb-0 text-primary">QR Code Generator</h5>
+  </div>
 
-		<div style="width: 650px; margin-left: 5px; background-color: darkkhaki; border: 0.5px solid black;">
-			<a href="https://github.com/abdulwakili/javascript-qrcode-generator-with-image"  target="_blank">Github</a>			
-			<br>
-			<a href="https://tools.completejavascript.com/vcard-qr-code-generator/"  target="_blank">Xem ví dụ nội dung truyền vào từng loại QR Code</a>
-			<br>
-			<br>
-			<div style="text-align: center; font-weight: bold;">HƯỚNG DẪN NHẬP DỮ LIỆU QR CODE</div>
-			<br>
-			<div>- WIFI: <span style="color: green;">WIFI:S:DayLaTenWifi;T:WPA;P:DayLaPass;H:false;;</span></div>
-			<div>&ensp;1. S => Tên wifi</div>
-			<div>&ensp;2. T => Loại bảo mật</div>
-			<div>&ensp;&ensp;* Loại NONE: nopass</div>
-			<div>&ensp;&ensp;* Loại WPA/WPA2: WPA</div>
-			<div>&ensp;&ensp;* Loại WEP: WEP</div>
-			<div>&ensp;3. P => Mật khẩu</div>
-			<div>&ensp;4. H => Loại Wifi Hidden Network (true | false)</div>
-			<div>- EMAIL: <span style="color: green;">mailto:example@email.com?subject=Đây là tiêu đề&body=Đây là nội dung</span></div>
-			<div>&ensp;1. mailto => Địa chỉ email nhận</div>
-			<div>&ensp;2. subject => Tiêu đề email</div>
-			<div>&ensp;3. body => Nội dung email</div>
-			<div>&ensp;&ensp;* Tiêu đề và nội dung sẽ phải encode bằng hàm <i>encodeURIComponent('Đây là tiêu đề')</i></div>
-			<div>&ensp;&ensp;&ensp;&ensp;hoặc dùng <a href="https://www.urlencoder.org/" target="_blank">tools</a></div>
-			<div>- SMS:</div>
-			<div>&ensp;1. Chỉ có số điện thoại => <span style="color: green;">SMSTO:1900:</span></div>
-			<div>&ensp;2. Số điện thoại + nội dung tin nhắn => <span style="color: green;">SMSTO:1900:Chào, tôi là Triều Lê</span></div>
-			<div>&ensp;3. Không có số điện thoại, chỉ có nội dung tin nhắn => <span style="color: green;">SMSTO::Chào, tôi là Triều Lê</span></div>
-			<div>- PHONE: <span style="color: green;">tel:0983299443</span></div>
-		</div>
-	</div>
-	<div id="qr_code" style="margin-left: 20px;"></div>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Form nhập liệu -->
+      <div class="col-lg-5">
+        <div class="card">
+          <div class="card-header bg-primary text-white py-2">
+            <h6 class="mb-0">Tạo QR Code</h6>
+          </div>
+          <div class="card-body">
+            <form id="qrForm">
+              <div class="row">
+                <!-- Các input giữ nguyên -->
+                <div class="col-md-6 mb-2">
+                  <label for="sizes" class="form-label">Kích thước</label>
+                  <select id="sizes" class="form-select form-select-sm">
+                    <option value="50">50 x 50</option>
+                    <option value="100">100 x 100</option>
+                    <option value="200">200 x 200</option>
+                    <option value="300" selected>300 x 300</option>
+                    <option value="500">500 x 500</option>
+                    <option value="1000">1000 x 1000</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <label for="types" class="form-label">Loại</label>
+                  <select id="types" class="form-select form-select-sm">
+                    <option value="dots">dots</option>
+                    <option value="rounded" selected>rounded</option>
+                    <option value="classy">classy</option>
+                    <option value="classy-rounded">classy-rounded</option>
+                    <option value="square">square</option>
+                    <option value="extra-rounded">extra-rounded</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <label for="colors" class="form-label">Màu</label>
+                  <input type="color" id="colors" class="form-control form-control-color" value="#12656b" />
+                </div>
+                <div class="col-md-6 mb-2">
+                  <label for="colors_b" class="form-label">Màu nền</label>
+                  <input type="color" id="colors_b" class="form-control form-control-color" value="#ffffff" />
+                </div>
+                <div class="col-12 mb-2">
+                  <label for="datas" class="form-label">Dữ liệu</label>
+                  <textarea id="datas" class="form-control form-control-sm" rows="2">https://tlsoftware.xyz</textarea>
+                </div>
+                <div class="col-12 mb-2">
+                  <label class="form-label">Hình ảnh (URL hoặc từ máy)</label>
+                  <textarea id="images" class="form-control form-control-sm mb-1" rows="1" placeholder="Dán link hình ảnh...">https://avatars.githubusercontent.com/u/13997578?v=4</textarea>
+                  <input type="file" id="imageFile" class="form-control form-control-sm" accept="image/*" />
+                </div>
+                <div class="col-md-6 mb-2">
+                  <label for="i_size" class="form-label">Image size</label>
+                  <select id="i_size" class="form-select form-select-sm">
+                    <option value="0.1">0.1</option>
+                    <option value="0.2">0.2</option>
+                    <option value="0.3">0.3</option>
+                    <option value="0.4">0.4</option>
+                    <option value="0.5" selected>0.5</option>
+                    <option value="0.6">0.6</option>
+                    <option value="0.7">0.7</option>
+                    <option value="0.8">0.8</option>
+                    <option value="0.9">0.9</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <label for="level" class="form-label">Sửa lỗi QR</label>
+                  <select id="level" class="form-select form-select-sm">
+                    <option value="L">L (~7%)</option>
+                    <option value="M">M (~15%)</option>
+                    <option value="Q">Q (~25%)</option>
+                    <option value="H" selected>H (~30%)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="d-grid mt-2">
+                <button type="button" id="run" class="btn btn-success btn-sm">Tạo QR Code</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
-	<div id="grid" style="display: none;"></div>
-	<table class="order-table table sortable" id="tableadmin" style="display: none; border: 0.5px solid black;">
-		<thead>
-			<tr>
-				<th style="width:320px;">Image</th>
-				<th>Text</th>
-			</tr>
-		</thead>
-		<tbody id="changetable" class="new">
-			<tr>
-				<td>
-					<div id="I1"></div>
-					<img id="C1"></image>
-				</td>
-				<td>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+      <!-- QR Code -->
+      <div class="col-lg-4">
+        <div class="card h-100">
+          <div class="card-header bg-success text-white py-2">QR Code kết quả</div>
+          <div class="card-body d-flex flex-column align-items-center justify-content-between">
+            <div id="qr_code" class="mb-3"></div>
 
-	
+            <div id="exportControls" class="w-100 d-none">
+              <div class="row g-2">
+                <div class="col-6">
+                  <select id="imgFormat" class="form-select form-select-sm">
+                    <option value="svg">SVG</option>
+                    <option value="png">PNG</option>
+                    <option value="jpeg">JPG</option>
+                    <option value="webp">WebP</option>
+                  </select>
+                </div>
+                <div class="col-6 d-grid">
+                  <button type="button" id="save" class="btn btn-outline-primary btn-sm">Lưu ảnh</button>
+                </div>
+                <div class="col-12 d-grid">
+                  <button type="button" id="exportPdf" class="btn btn-outline-danger btn-sm">Xuất PDF</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <script type="text/javascript">
-		var qrCode;
-		document.getElementById("images").value = "https://avatars.githubusercontent.com/u/13997578?v=4";	
-		document.getElementById("datas").value = "https://tlsoftware.xyz";
-		document.getElementById("colors").value = "#12656bff";
-		document.getElementById("colors_b").value = "#ffffff";
-		document.getElementById("types").value = "rounded";
-		document.getElementById("sizes").value = "200";
-		document.getElementById("i_size").value = "0.5";
-		document.getElementById("level").value = "H";
+      <!-- Hướng dẫn -->
+      <div class="col-lg-3">
+        <div class="accordion" id="guideAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#wifi">WIFI</button></h2>
+            <div id="wifi" class="accordion-collapse collapse" data-bs-parent="#guideAccordion">
+              <div class="accordion-body small">
+                WIFI: <span class="text-success">WIFI:S:DayLaTenWifi;T:WPA;P:DayLaPass;H:false;;</span><br>
+                1. S => Tên wifi<br>
+                2. T => Loại bảo mật (nopass | WPA | WEP)<br>
+                3. P => Mật khẩu<br>
+                4. H => Mạng ẩn (true | false)
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#email">EMAIL</button></h2>
+            <div id="email" class="accordion-collapse collapse" data-bs-parent="#guideAccordion">
+              <div class="accordion-body small">
+                mailto:example@email.com?subject=Đây là tiêu đề&body=Đây là nội dung<br>
+                1. mailto => Địa chỉ nhận<br>
+                2. subject => Tiêu đề<br>
+                3. body => Nội dung<br>
+                * Encode bằng <code>encodeURIComponent()</code> hoặc <a href="https://www.urlencoder.org/" target="_blank">tools</a>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sms">SMS</button></h2>
+            <div id="sms" class="accordion-collapse collapse" data-bs-parent="#guideAccordion">
+              <div class="accordion-body small">
+                1. Số điện thoại: <span class="text-success">SMSTO:1900:</span><br>
+                2. Số + nội dung: <span class="text-success">SMSTO:1900:Chào</span><br>
+                3. Nội dung: <span class="text-success">SMSTO::Chào</span>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#phone">PHONE</button></h2>
+            <div id="phone" class="accordion-collapse collapse" data-bs-parent="#guideAccordion">
+              <div class="accordion-body small">
+                <span class="text-success">tel:0983299443</span>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#usage">Sử dụng</button></h2>
+            <div id="usage" class="accordion-collapse collapse" data-bs-parent="#guideAccordion">
+              <div class="accordion-body small">
+                - Chọn dữ liệu và các thông số QR như màu sắc, loại dot, hình ảnh...<br>
+                - Nhấn "Tạo QR Code" để xem kết quả.<br>
+                - Dùng "Lưu ảnh" để chọn định dạng và tải về PNG, SVG hoặc JPEG.<br>
+                - Hoặc nhấn "Xuất PDF" để tải QR dưới dạng tài liệu.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-2 small text-center">
+          <a href="https://github.com/abdulwakili/javascript-qrcode-generator-with-image" target="_blank">Source on Github</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-		$("#run").on( "click", function() {
-			$("#qr_code").empty();
-			var _size = document.getElementById("sizes").value;
-			var _types = document.getElementById("types").value;
-			var value = document.getElementById("sizes").value;
-			var _width, _height;
-			
-			switch (_size) {
-				case "50":
-					_width = 50;
-					_height = 50;
-					break;
-				case "100":
-					_width = 100;
-					_height = 100;
-					break;
-				case "200":
-					_width = 200;
-					_height = 200;
-					break;
-				case "300":
-					_width = 300;
-					_height = 300;
-					break;
-				case "500":
-					_width = 500;
-					_height = 500;
-					break;
-				case "1000":
-					_width = 1000;
-					_height = 1000;
-					break;
-				default:
-					_width = 300;
-					_height = 300;
-					break;
-			}
-			
-			var _value = document.getElementById("datas").value;
-			//if(_value.substring(0, 6) == 'mailto'){
-			//	_value = 
-			//}
+  <!-- SCRIPT -->
+  <script>
+    let qrCode;
 
-			qrCode = new QRCodeStyling({
-                width: _width,
-                height: _height,
-                type: "canvas",
-                data: document.getElementById("datas").value,
-                image: href = document.getElementById("images").value,
-				qrOptions: {
-					errorCorrectionLevel: document.getElementById("level").value,
-				},
-                dotsOptions: {
-                    color: document.getElementById("colors").value,
-                    type: _types
-                },
-                backgroundOptions: {
-                    color: document.getElementById("colors_b").value,
-                },
-                imageOptions: {
-					imageSize: document.getElementById("i_size").value,
-                    crossOrigin: undefined,
-                    margin: 2,
-                }
-            });
-            
-			qrCode.append(document.getElementById("qr_code"));
+    $("#run").click(function () {
+      $("#qr_code").empty();
+      $("#exportControls").addClass("d-none");
 
-            //qrCode.append(document.getElementById("I1"));	
-			//var canvas = document.getElementById("I1").childNodes[0];
-			//var context = canvas.getContext("2d");
-			//var dataURL = canvas.toDataURL("image/png", 0.5);
-			//console.log(canvas);
-			//console.log(dataURL);
-			//var img = document.getElementById("C1");
-    		//img.src = dataURL;
-		} );
+      const file = $("#imageFile")[0].files[0];
+      const imageSrc = file ? URL.createObjectURL(file) : $("#images").val();
 
-		$("#save").on( "click", function() {
-			if(qrCode){
-				var _s = document.getElementById("sizes");
-				var _s_text= _s.options[_s.selectedIndex].text;
-				qrCode.download({ name: "qrcode_" + $("#datas").val() + '_' + _s_text, extension: "svg" });
-			}
-		} );
-    </script>
+      qrCode = new QRCodeStyling({
+        width: parseInt($("#sizes").val()),
+        height: parseInt($("#sizes").val()),
+        type: "canvas",
+        data: $("#datas").val(),
+        image: imageSrc,
+        qrOptions: {
+          errorCorrectionLevel: $("#level").val(),
+        },
+        dotsOptions: {
+          color: $("#colors").val(),
+          type: $("#types").val()
+        },
+        backgroundOptions: {
+          color: $("#colors_b").val(),
+        },
+        imageOptions: {
+          imageSize: parseFloat($("#i_size").val()),
+          crossOrigin: "anonymous",
+          margin: 2,
+        }
+      });
 
+      qrCode.append(document.getElementById("qr_code"));
+      $("#exportControls").removeClass("d-none");
+    });
+
+    $("#save").click(function () {
+      if (qrCode) {
+        const ext = $("#imgFormat").val();
+        const name = "qrcode_" + Date.now();
+        qrCode.download({ name: name, extension: ext });
+      }
+    });
+
+    $("#exportPdf").click(async function () {
+      if (!qrCode) return alert("Vui lòng tạo QR Code trước.");
+
+      const canvas = document.querySelector("#qr_code canvas");
+      const dataUrl = canvas.toDataURL("image/png");
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF();
+
+      const imgProps = pdf.getImageProperties(dataUrl);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const imgRatio = imgProps.width / imgProps.height;
+      const imgWidth = pdfWidth * 0.6;
+      const imgHeight = imgWidth / imgRatio;
+
+      const x = (pdfWidth - imgWidth) / 2;
+      const y = 20;
+
+      pdf.text("QR Code Generator", pdfWidth / 2, 10, { align: "center" });
+      pdf.addImage(dataUrl, "PNG", x, y, imgWidth, imgHeight);
+      pdf.text("Dữ liệu: " + $("#datas").val(), 10, y + imgHeight + 10);
+
+      pdf.save("qrcode_" + Date.now() + ".pdf");
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
